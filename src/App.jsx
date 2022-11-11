@@ -1,34 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useRef, useState } from "react";
+import { useSpring, animated } from "react-spring";
+import Table from "./Components/Table";
+import TableForm from "./Components/TableForm";
+import TableFormBtn from "./Components/TableFormBtn";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [isToggled, setToggle] = useState(false);
+
+  const menuAppear = useSpring({
+    transform: isToggled ? "translate3D(0,0,0)" : "translate3D(0,-40px,0)",
+    opacity: isToggled ? 1 : 0,
+  });
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <section className="bg-slate-200 h-screen w-screen relative ">
+      <div className="absolute top-[10%] left-1/2 -translate-x-1/2  w-[650px]">
+        <h1 className="text-3xl font-bold mb-2 text-center">Contacts</h1>
+        <Table />
+        <TableFormBtn toggled={isToggled} handleToggle={setToggle} />
+        <animated.div style={menuAppear}>
+          {isToggled ? <TableForm /> : null}
+        </animated.div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    </section>
+  );
 }
-
-export default App
